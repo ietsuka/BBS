@@ -65,6 +65,16 @@
 
                 @forelse($post->contents as $content)
                     <div class="border-top p-4">
+                        <form
+                          style="display: inline-block;"
+                          method="POST"
+                          action="{{ route('comments.destroy', ['comment' => $content]) }}"
+                        >
+                          @csrf
+                          @method('DELETE')
+
+                          <button class="btn btn-danger">削除する</button>
+                        </form>
                         <time class="text-secondary">
                             {{ $content->created_at->format('Y.m.d H:i') }}
                         </time>

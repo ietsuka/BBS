@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\Content;
 
 class CommentsController extends Controller
 {
@@ -19,5 +20,14 @@ class CommentsController extends Controller
       return redirect() -> route('posts.show', ['post'=>$post]);
     }
 
-    // public function destroy()
+    public function destroy($content_id) {
+      $content = Content::findOrFail($content_id);
+      $post_id = $content -> post -> id;
+
+      \DB::transaction(function() use ($content) {
+        $content->delete();
+      });
+
+      return redirect()->route('posts.show', ['post'=>$post_id]);
+    }
 }
